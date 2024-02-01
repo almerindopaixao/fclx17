@@ -1,0 +1,85 @@
+version: '3.1'
+
+services:
+  catalog_db:
+    image: mysql:8.0.30-debian
+    container_name: catalog_db
+    networks:
+      - catalog
+    restart: always
+    volumes:
+      - catalog_db:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=catalog
+
+  catalog_api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.catalog_api
+    container_name: catalog_api
+    networks:
+      - catalog
+    ports:
+      - "8080:8080"
+    depends_on:
+      - catalog_db
+
+  order_db:
+    image: mysql:8.0.30-debian
+    container_name: order_db
+    networks:
+      - order
+    restart: always
+    volumes:
+      - order_db:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=order
+
+  message_broker:
+    image: rabbitmq:3.12-management
+    hostname: 'mabbit'
+    container_name: message_broker
+    networks:
+      - order
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - message_broker:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+
+  order_api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.order_api
+    container_name: order_api
+    networks:
+      - order
+    ports:
+      - "3000:3000"
+    depends_on:
+      - order_db
+      - message_broker
+
+networks:
+  catalog:
+    driver: bridge
+  order:
+    driver: bridge
+
+volumes:
+  catalog_db:
+    driver: local
+  order_db:
+    driver: local
+  message_broker:
+    driver: local
+    
