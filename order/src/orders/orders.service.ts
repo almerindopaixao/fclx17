@@ -79,6 +79,30 @@ export class OrdersService {
     }
   }
 
+  async pay(id: string) {
+    const order = await this.orderRepository.findOneByOrFail({
+      id,
+    });
+
+    order.pay();
+
+    await this.orderRepository.save(order);
+
+    return order;
+  }
+
+  async fail(id: string) {
+    const order = await this.orderRepository.findOneByOrFail({
+      id,
+    });
+
+    order.fail();
+
+    await this.orderRepository.save(order);
+
+    return order;
+  }
+
   async useTransaction<T>(value: T, cb: () => Promise<void>): Promise<T> {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();

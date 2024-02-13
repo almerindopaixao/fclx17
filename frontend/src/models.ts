@@ -32,3 +32,14 @@ export type Category = {
     price: number;
     product: Product;
   };
+
+  export type CartItem = {
+    product_id: string;
+    quantity: number;
+    total: number;
+  }
+  
+  export type Cart = {
+    items: CartItem[];
+    total: number;
+  }

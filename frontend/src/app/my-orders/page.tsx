@@ -10,45 +10,12 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { Order, OrderStatus } from "../../models";
-
-const orders: Order[] = [
-  {
-    id: '1',
-    total: 50,
-    status: OrderStatus.PENDING,
-    items: [
-      {
-        id: 1,
-        quantity: 5,
-        price: 25,
-        product: {
-          id: '1',
-          description: 'teste',
-          name: 'Coca Cola',
-          price: 5,
-          category_id: '2',
-          image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-        },
-      },
-      {
-        id: 2,
-        quantity: 5,
-        price: 25,
-        product: {
-          id: '1',
-          description: 'teste',
-          name: 'Coca Cola',
-          price: 5,
-          category_id: '2',
-          image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-        },
-      },
-    ],
-    created_at: new Date().toISOString(),
-  }
-]
+import { OrderServiceFactory } from "@/services/order.service";
 
 export async function MyOrdersListPage() {
+  const orderService = OrderServiceFactory.create();
+  const orders = await orderService.getOrders()
+
   return (
     <Box>
       <Typography variant="h4">Meus pedidos</Typography>

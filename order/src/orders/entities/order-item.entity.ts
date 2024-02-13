@@ -19,7 +19,7 @@ export class OrderItem {
   @Column({ type: 'float', precision: 10, scale: 2 })
   price: number;
 
-  @ManyToOne(() => Product)
+  @ManyToOne(() => Product, { eager: true })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 

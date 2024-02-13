@@ -12,44 +12,14 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { CheckoutForm } from "./CheckoutForm";
 import { redirect } from "next/navigation";
 import { Total } from "../../components/Total";
-
-
-const products = [
-  {
-    id: '1',
-    description: 'teste',
-    name: 'Coca Cola',
-    price: 5,
-    category_id: '2',
-    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-  },
-  {
-    id: '2',
-    description: 'teste',
-    name: 'Coca Cola',
-    price: 5,
-    category_id: '2',
-    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-  },
-]
-
-const cart = {
-  items: [
-    {
-      product_id: '1',
-      quantity: 5,
-      total: 25
-    },
-    {
-      product_id: '2',
-      quantity: 5,
-      total: 25
-    },
-  ],
-  total: 50
-}
+import { CartServiceFactory } from "@/services/cart.service";
+import { ProductService } from "@/services/product.service";
 
 async function CheckoutPage() {
+  const productService = new ProductService();
+  const cart = CartServiceFactory.create().getCart()
+  const products = await productService.getProductByIds(cart.items.map((item) => item.product_id))
+  
   if (cart.items.length === 0) {
     return redirect("/my-cart");
   }

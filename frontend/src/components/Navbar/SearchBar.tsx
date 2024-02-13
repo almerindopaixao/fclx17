@@ -52,11 +52,20 @@ export function SearchBar() {
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
-      <form>
+      <form onSubmit={(event) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.target as HTMLFormElement)
+        const search = formData.get('search')?.toString()
+        const categoryId = searchParams.get('category_id')
+
+        searchProducts(router, search, categoryId)
+      }}>
         <StyledInputBase
           name="search"
           type="search"
           placeholder="Pesquisar…"
+          defaultValue={searchParams.get('search')}
         />
       </form>
     </Search>

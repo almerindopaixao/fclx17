@@ -9,49 +9,22 @@ import {
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import CheckIcon from "@mui/icons-material/Check";
-import { Order, OrderStatus } from "../../../../models";
 import { Total } from "../../../../components/Total";
+import { OrderServiceFactory } from "@/services/order.service";
+import { PageProps } from "@/interfaces/page-props.interface";
 
-const order: Order = {
-  id: '1',
-  total: 50,
-  status: OrderStatus.PAID,
-  items: [
-    {
-      id: 1,
-      quantity: 5,
-      price: 25,
-      product: {
-        id: '1',
-        description: 'teste',
-        name: 'Coca Cola',
-        price: 5,
-        category_id: '2',
-        image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-      },
-    },
-    {
-      id: 2,
-      quantity: 5,
-      price: 25,
-      product: {
-        id: '1',
-        description: 'teste',
-        name: 'Coca Cola',
-        price: 5,
-        category_id: '2',
-        image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-      },
-    },
-  ],
-  created_at: new Date().toISOString()
+interface CheckoutSuccessPageParams {
+  orderId: string
 }
 
-async function CheckoutSuccessPage({
-  params,
-}: {
-  params: { orderId: string };
-}) {
+interface CheckoutSuccessPageSearchParams {}
+
+interface CheckoutSuccessPageProps extends PageProps<CheckoutSuccessPageParams, CheckoutSuccessPageSearchParams> {}
+
+async function CheckoutSuccessPage({ params }: CheckoutSuccessPageProps) {
+  const orderService = OrderServiceFactory.create();
+  const order = await orderService.getOrder(params.orderId)
+  
   return (
     <Box>
       <Grid2 container spacing={2}>

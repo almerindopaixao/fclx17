@@ -6,10 +6,13 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import { UserMenu } from "./UserMenu";
 import { SearchBar } from "./SearchBar";
 import { SelectCategory } from "./SelectCategory";
-// import { CategoryService } from "../../services/category.service";
-// import { AuthService } from "../../services/auth.service";
+import { CategoryService } from "@/services/category.service";
+import { AuthServiceFactory } from "@/services/auth.service";
 
 export async function Navbar() {
+  const categories = await new CategoryService().getCategories()
+  const user = AuthServiceFactory.create().getUser()
+
   return (
     <AppBar position="fixed">
       <Toolbar sx={{ backgroundColor: "background.paper" }}> 
@@ -28,7 +31,7 @@ export async function Navbar() {
         <IconButton LinkComponent={Link} size="large" href="/my-cart">
           <ShoppingCartIcon />
         </IconButton>
-        <UserMenu user={{}} />
+        <UserMenu user={user} />
       </Toolbar>
       <Toolbar
         sx={{
@@ -38,7 +41,7 @@ export async function Navbar() {
           p: 1,
         }}
       >
-        <SelectCategory categories={[]} />
+        <SelectCategory categories={categories} />
 
         <Box
           component={Link}

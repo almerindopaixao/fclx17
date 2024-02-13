@@ -8,45 +8,23 @@ import {
   Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Order, OrderStatus } from "../../../models";
+import { OrderStatus } from "../../../models";
 import { Total } from "../../../components/Total";
+import { PageProps } from "@/interfaces/page-props.interface";
+import { OrderServiceFactory } from "@/services/order.service";
 
-const order: Order = {
-  id: "1",
-  total: 50,
-  status: OrderStatus.PENDING,
-  items: [
-    {
-      id: 1,
-      quantity: 5,
-      price: 25,
-      product: {
-        id: "1",
-        description: "teste",
-        name: "Coca Cola",
-        price: 5,
-        category_id: "2",
-        image_url: "https://cdn-cosmos.bluesoft.com.br/products/7894900018370",
-      },
-    },
-    {
-      id: 2,
-      quantity: 5,
-      price: 25,
-      product: {
-        id: "1",
-        description: "teste",
-        name: "Coca Cola",
-        price: 5,
-        category_id: "2",
-        image_url: "https://cdn-cosmos.bluesoft.com.br/products/7894900018370",
-      },
-    },
-  ],
-  created_at: new Date().toISOString(),
-};
+interface MyOrderDetailPageParams {
+  orderId: string
+}
 
-async function MyOrderDetail({ params }: { params: { orderId: string } }) {
+interface MyOrderDetailPageSearchParams {}
+
+interface MyOrderDetailPageProps extends PageProps<MyOrderDetailPageParams, MyOrderDetailPageSearchParams> {}
+
+async function MyOrderDetail({ params }: MyOrderDetailPageProps) {
+  const orderService = OrderServiceFactory.create();
+  const order = await orderService.getOrder(params.orderId)
+  
   return (
     <Box>
       <Grid2 container spacing={2}>

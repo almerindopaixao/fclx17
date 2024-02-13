@@ -3,23 +3,16 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Image from "next/legacy/image";
-import { Product } from "@/models";
 import { ProductQuantityForm } from "./ProductQuantityForm";
+import { ProductService } from "@/services/product.service";
+import { PageProps } from "@/interfaces/page-props.interface";
 
-async function ProductDetailPage({
-  params
-}: {
-  params: { productId: string };
-}) {
+interface ProductDetailPageProps extends PageProps<{
+  productId: string
+}, {}> {} 
 
-  const product: Product =  {
-    id: params.productId,
-    description: 'teste',
-    name: 'Coca Cola',
-    price: 5,
-    category_id: '2',
-    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
-  }
+async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const product = await new ProductService().getProduct(params.productId)
 
   return (
     <Grid2 container spacing={2}>

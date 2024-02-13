@@ -18,8 +18,8 @@ POST http://localhost:3001/auth/register
 Content-Type: application/json
 
 {
-  "username": "john",
-  "password": "john"
+  "username": "almerindopaixao",
+  "password": "123456"
 }
 
 ###
@@ -28,8 +28,8 @@ POST http://localhost:3001/auth/login
 Content-Type: application/json
 
 {
-  "username": "john",
-  "password": "john"
+  "username": "almerindopaixao",
+  "password": "123456"
 }
 
 

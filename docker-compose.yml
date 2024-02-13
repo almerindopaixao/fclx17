@@ -9,11 +9,11 @@ services:
     restart: always
     volumes:
       - catalog_db:/var/lib/mysql
+      - ./catalog/db/seed:/docker-entrypoint-initdb.d
     ports:
       - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=catalog
 
   catalog_api:
     build: 
@@ -68,6 +68,14 @@ services:
     depends_on:
       - order_db
       - message_broker
+
+  storage:
+    build: 
+      context: .
+      dockerfile: Dockerfile.storage
+    container_name: storage
+    ports:
+        - "9000:9000"
 
 networks:
   catalog:
