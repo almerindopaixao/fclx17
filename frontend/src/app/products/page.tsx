@@ -10,47 +10,40 @@ import {
   import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
   import Link from "next/link";
   import Image from "next/legacy/image";
-//   import { ProductService } from "../../services/product.service";
   import { Product } from "../../models";
   
-  async function getProducts({
-    search,
-    category_id,
-  }: {
-    search?: string;
-    category_id?: string;
-  }): Promise<Product[]> {
-    const urlSearchParams = new URLSearchParams();
-  
-    if (search) {
-      urlSearchParams.append("search", search);
-    }
-  
-    if (category_id) {
-      urlSearchParams.append("category_id", category_id);
-    }
-  
-    let url = `${process.env.NEXT_API_URL}/products`;
-  
-    if (urlSearchParams.toString()) {
-      url += `?${urlSearchParams.toString()}`;
-    }
-  
-    const response = await fetch(url, {
-      next: {
-        revalidate: 1,
-      },
-    });
-  
-    return response.json();
+  const products: Product[] = [
+    {
+    id: '1',
+    description: 'teste',
+    name: 'Coca Cola',
+    price: 5,
+    category_id: '2',
+    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
+  },
+  {
+    id: '2',
+    description: 'teste',
+    name: 'Coca Cola',
+    price: 5,
+    category_id: '2',
+    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
+  },
+  {
+    id: '3',
+    description: 'teste',
+    name: 'Coca Cola',
+    price: 5,
+    category_id: '2',
+    image_url: 'https://cdn-cosmos.bluesoft.com.br/products/7894900018370'
   }
-  
+]
+
   async function ListProductsPage({
     searchParams,
   }: {
     searchParams: { search?: string; category_id?: string };
   }) {
-    const products: Product[] = []
 
     return (
       <Grid2 container spacing={2}>

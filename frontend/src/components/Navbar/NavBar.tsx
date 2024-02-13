@@ -28,7 +28,7 @@ export async function Navbar() {
         <IconButton LinkComponent={Link} size="large" href="/my-cart">
           <ShoppingCartIcon />
         </IconButton>
-        <UserMenu user={null} />
+        <UserMenu user={{}} />
       </Toolbar>
       <Toolbar
         sx={{
