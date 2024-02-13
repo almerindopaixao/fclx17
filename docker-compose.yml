@@ -64,7 +64,7 @@ services:
     networks:
       - order
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       - order_db
       - message_broker
