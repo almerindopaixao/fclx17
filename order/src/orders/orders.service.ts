@@ -44,13 +44,15 @@ export class OrdersService {
       })),
     });
 
-    return this.useTransaction(order, async () => {
-      await this.amqpConnection.publish('amq.direct', 'OrderCreated', {
-        order_id: order.id,
-        card_hash: createOrderDto.card_hash,
-        total: order.total,
-      });
+    await this.orderRepository.save(order);
+
+    await this.amqpConnection.publish('amq.direct', 'OrderCreated', {
+      order_id: order.id,
+      card_hash: createOrderDto.card_hash,
+      total: order.total,
     });
+
+    return order;
   }
 
   findAll(client_id: number) {

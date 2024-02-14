@@ -8,7 +8,7 @@ import { Global, Module } from '@nestjs/common';
       uri: 'amqp://admin:admin@message_broker:5672',
       connectionInitOptions: {
         wait: true,
-        timeout: 30000,
+        timeout: 60000,
       },
     }),
   ],

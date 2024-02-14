@@ -19,16 +19,19 @@ export class OrderConsumer {
     exchange: 'amq.direct',
     routingKey: 'PaymentDone',
     queue: 'payments',
+    name: 'nestjs-order',
   })
   async consume(msg: { order_id: string; status: OrderStatus }) {
     console.log('🚀 ~ OrderConsumer ~ consume ~ msg:', msg);
     try {
       if (msg.status === OrderStatus.PAID) {
         await this.orderService.pay(msg.order_id);
+        return;
       }
 
       if (msg.status === OrderStatus.FAILED) {
         await this.orderService.fail(msg.order_id);
+        return;
       }
 
       throw new InvalidStatusError('Invalid status');
